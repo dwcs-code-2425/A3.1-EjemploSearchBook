@@ -32,40 +32,40 @@ if (isset($_GET["busqueda"])) {
             // (2) Preparar la consulta
             //En la bd bookdb no importan mayúsculas/minúsculas porque está usando collation caseinsensitive, pero no está demás que nuestro código no dependa de la collation de la base de datos
             $stmt = $con->prepare("select title from books where UPPER(title) like ? ");
-            
+
             // (3) Sustituir de los parámetros
             $stmt->bindValue(1, "%" . strtoupper($terminos_busqueda) . "%");
 
             //Antes de ejecutar: 
-            echo "<p style='color:blue;'> Información de <code>debugDumpParams</code> <span style='color:red'> antes </span> de llamar a  <code>execute()</code>:</p>";
-            echo "<pre>";
-            $stmt->debugDumpParams();
-            echo "</pre>";
+            // echo "<p style='color:blue;'> Información de <code>debugDumpParams</code> <span style='color:red'> antes </span> de llamar a  <code>execute()</code>:</p>";
+            // echo "<pre>";
+            // $stmt->debugDumpParams();
+            // echo "</pre>";
 
             // (4) Ejecutar la consulta
             $stmt->execute();
 
             //Después de ejecutar
-            echo "<p style='color:blue;'> Información de <code>debugDumpParams</code> <span style='color:red'> después </span> de llamar a  <code>execute()</code>:</p>";
-            echo "<pre>";
-            $stmt->debugDumpParams();
-            echo "</pre>";
+            // echo "<p style='color:blue;'> Información de <code>debugDumpParams</code> <span style='color:red'> después </span> de llamar a  <code>execute()</code>:</p>";
+            // echo "<pre>";
+            // $stmt->debugDumpParams();
+            // echo "</pre>";
 
             // (5) Recuperar los resultados
             $array = $stmt->fetchAll(PDO::FETCH_NUM);
-            if (($array !== false)) {
-                if (!empty($array)) {
+            // if (($array !== false)) {
+            if (!empty($array)) {
 
-                    echo "<ol>";
-                    foreach ($array as $fila_array) {
-                        // un único valor: el title
-                        echo "<li> $fila_array[0] </li>";
-                    }
-                    echo "</ol>";
-                } else {
-                    echo "<p>No se han encontrado resultados</p>";
+                echo "<ol>";
+                foreach ($array as $fila_array) {
+                    // un único valor: el title
+                    echo "<li> $fila_array[0] </li>";
                 }
+                echo "</ol>";
+            } else {
+                echo "<p>No se han encontrado resultados</p>";
             }
+            //}
 
             //(6) Capturar excepciones
         } catch (Exception $e) {
@@ -76,8 +76,6 @@ if (isset($_GET["busqueda"])) {
             $con = null;
             $stmt = null;
         }
-
-        
     } else {
         echo "<p> Introduzca una cadena no vacía </p>";
     }
